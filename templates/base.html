@@ -1,0 +1,33 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Adrenaline.AI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<nav>
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span></li>
+      <li><a href="{{ url_for('dashboard') }}">Tableau de bord</a></li>
+      <li><a href="{{ url_for('recommended_workout') }}">Entraînement suggéré</a></li>
+      <li><a href="{{ url_for('logout') }}">Déconnexion</a></li>
+    {% else %}
+      <li><a href="{{ url_for('sign_up') }}">Inscription</a></li>
+      <li><a href="{{ url_for('sign_in') }}">Connexion</a></li>
+    {% endif %}
+  </ul>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
+<footer>
+    <ul>
+        <li><span>© Adrenaline.AI, Inc.</span></li>
+        <li><a href="{{ url_for('privacy') }}">Confidentialité</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+    </ul>
+</footer>
