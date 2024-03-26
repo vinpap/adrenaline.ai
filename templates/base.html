@@ -4,6 +4,7 @@
 <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 <nav>
   <ul>
+    <li><img src="{{ url_for('static', filename='logo.png') }}" \></li>
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span></li>
       <li><a href="{{ url_for('dashboard') }}">Tableau de bord</a></li>

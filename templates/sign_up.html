@@ -1,1 +1,23 @@
 {% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Inscription{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <img src="{{ url_for('static', filename='logo_big.png') }}" \>
+    <form method="post">
+    <label for="first_name">Prénom</label>
+    <input name="first_name" id="first_name" required>
+    <label for="surname">Nom</label>
+    <input name="surname" id="surname" required>
+    <label for="username">Adresse e-mail</label>
+    <input name="username" id="username" required>
+    <label for="password">Mot de passe</label>
+    <input type="password" name="password" id="password" required>
+    <input type="submit" value="Connexion">
+    </form>
+    {% if msg %}
+        <p style="color: red;"><strong>Erreur : </strong> {{ msg }}
+    {% endif %}
+{% endblock %}

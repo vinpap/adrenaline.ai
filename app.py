@@ -1,5 +1,10 @@
-from flask import Flask, session, redirect, render_template
-from werkzeug.security import check_password_hash, generate_password_hash
+import os
+
+from flask import Flask, session, redirect, render_template, request, flash
+import mysql.connector
+
+from utils import hash_new_password
+
 
 app = Flask(__name__)
 
@@ -13,19 +18,47 @@ def index():
         return redirect("/dashboard")
     return redirect("/sign_in")
 
-@app.route("/sign_in")
+@app.route("/sign_in", methods = ['POST', 'GET'])
 def sign_in():
     """
     Returns the sign in page.
     """
+    if request.method == "POST":
+        # On vérifie que l'utilisateur existe et a entré les bonnes infos
+        with mysql.connector.connect(
+            host=os.environ["MYSQL_HOST"],
+            user=os.environ["MYSQL_USER"],
+            password=os.environ["MYSQL_PWD"],
+            database=os.environ["MYSQL_DB_NAME"],
+        ) as db:
+            # Regarder le salt qui correspond à l'e-mail entré
+            # Calculer le hash du mdp entré + du salt
+
+            # Si tout est ok, on change les variables de session pour log l'utilisateur
+            pass
+            
+    
     return render_template("sign_in.html")
 
-@app.route("/sign_up")
+@app.route("/sign_up", methods = ['POST', 'GET'])
 def sign_up():
     """
     Returns the sign up page.
     """
-    return render_template("sign_up.html")
+    if request.method == "POST":
+        with mysql.connector.connect(
+            host=os.environ["MYSQL_HOST"],
+            user=os.environ["MYSQL_USER"],
+            password=os.environ["MYSQL_PWD"],
+            database=os.environ["MYSQL_DB_NAME"],
+        ) as db:
+            # Regarder si l'email est déjà enregistré
+            query = f"""SELECT * FROM users WHERE email = '{request.form["username"]}'""" # Attention aux possibles injectins SQL (e.g. si l'e-mail entré contient des guillemets)
+
+            # Stocker le mdp dans la BDD
+            hash, salt = hash_new_password(request.form["password"])
+    msg = "Test des messages Flash"        
+    return render_template("sign_up.html", msg=msg)
 
 @app.route("/logout")
 def logout():

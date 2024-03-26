@@ -1,1 +1,17 @@
 {% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Une question, un problème ? Contactez-nous !{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Adresse e-mail</label>
+    <input name="username" id="username" required>
+    <label for="topic">Sujet</label>
+    <input name="topic" id="topic" required>
+    <label for="message">Votre message</label>
+    <input name="message" id="message" required>
+    <input type="submit" value="Envoyer">
+  </form>
+{% endblock %}
