@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 {% block header %}
-  <h1>{% block title %}Votre tableau de bord{% endblock %}</h1>
+  
 {% endblock %}
 
 {% block content %}
-    <h2>Distance parcourue en km</h2>
-    <span>INSÉRER GRAPHIQUE ICI</span>
-    <h2>Calories brûlées</h2>
-    <span>INSÉRER GRAPHIQUE ICI</span>
+<div class="user-metrics">
+  <h1 class="page-title">Votre tableau de bord</h1>
+  <h3>Distance parcourue en km</h3>
+  <span>INSÉRER GRAPHIQUE ICI</span>
+  <h3>Calories brûlées</h3>
+  <span>INSÉRER GRAPHIQUE ICI</span>
+</div>
+
 {% endblock %}

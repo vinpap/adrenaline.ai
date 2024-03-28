@@ -1,34 +1,49 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} - Adrenaline.AI</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css" />
 <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-<nav>
-  <ul>
-    <li><img src="{{ url_for('static', filename='logo.png') }}" \></li>
-    {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span></li>
-      <li><a href="{{ url_for('dashboard') }}">Tableau de bord</a></li>
-      <li><a href="{{ url_for('recommended_workout') }}">Entraînement suggéré</a></li>
-      <li><a href="{{ url_for('logout') }}">Déconnexion</a></li>
-    {% else %}
-      <li><a href="{{ url_for('sign_up') }}">Inscription</a></li>
-      <li><a href="{{ url_for('sign_in') }}">Connexion</a></li>
-    {% endif %}
-  </ul>
-</nav>
-<section class="content">
-  <header>
-    {% block header %}{% endblock %}
+<body>
+  <header class="container-fluid bar">
+  
+    <div class="grid">
+
+      <div><a href="/"><img src="{{ url_for('static', filename='logo.png') }}" \></a></div>
+        <div class="grid">
+      {% if user %}
+        <div><span>{{ user }}</span></div>
+        <div><a href="{{ url_for('dashboard') }}">Tableau de bord</a></div>
+        <div><a href="{{ url_for('recommended_workout') }}">Entraînement suggéré</a></div>
+        <div><a href="{{ url_for('logout') }}">Déconnexion</a></div>
+      {% else %}
+        <div><a href="{{ url_for('sign_up') }}">Inscription</a></div>
+        <div><a href="{{ url_for('sign_in') }}">Connexion</a></div>
+      {% endif %}
+      </div>
+    </div>
+
   </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
-</section>
-<footer>
-    <ul>
-        <li><span>© Adrenaline.AI, Inc.</span></li>
-        <li><a href="{{ url_for('privacy') }}">Confidentialité</a></li>
-        <li><a href="{{ url_for('contact') }}">Contact</a></li>
-    </ul>
-</footer>
+  <main class="container">
+    <h1>
+      {% block header %}{% endblock %}
+    </h1>
+    {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="container-fluid bar">
+    <div class="grid">
+      <div></div>
+      <div class="grid">
+        <div class="bar-element"><span>© Adrenaline.AI, Inc.</span></div>
+        <div class="bar-element"><a href="{{ url_for('privacy') }}">Confidentialité</a></div>
+        <div class="bar-element"><a href="{{ url_for('contact') }}">Contact</a></div>
+      </div>
+      <div></div>
+    </div>
+  </footer>
+</body>
+
