@@ -71,7 +71,8 @@ def logout():
     """
     Logs out the user.
     """
-    session.pop("username")
+    if "username" in session:
+        session.pop("username")
     return redirect("/sign_in")
 
 @app.route("/privacy")
