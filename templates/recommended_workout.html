@@ -1,1 +1,23 @@
 {% extends 'base.html' %}
+
+{% block content %}
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js" charset="utf-8"></script>
+<div class="user-metrics">
+  <h1 class="page-title">Entraînement suggéré</h1>
+  <p>Voici l'entraînement que nous vous recommandons aujourd'hui :</p>
+  <div class="recommended-workout">
+    Entraînement en fractionné<br>
+    Durée : 55 minutes<br>
+    Étapes :
+        <ul>
+            <li>15 min à 145 BPM - échauffement</li>
+            <li>alterner 10 min à 170 BPM et 3 min à 145 BPM (répéter 3X)</li>
+            <li>10 min à 145 BPM - récupération</li>
+        </ul>
+        Cet entraînement vous permettra de soutenir un effort intense sur de plus longues distances.
+    </div>
+
+</div>
+
+
+{% endblock %}

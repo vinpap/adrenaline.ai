@@ -1,9 +1,10 @@
 import os
 
-from flask import Flask, session, redirect, render_template, request, session
+from flask import Flask, session, redirect, render_template, request, session, abort
+import requests
 import mysql.connector
 
-from utils import hash_new_password, user_exists, save_user, check_password
+from utils import hash_new_password, user_exists, save_user, check_password, retrieve_data
 
 
 app = Flask(__name__)
@@ -101,7 +102,8 @@ def dashboard():
     
     # Récupérer les métriques de l'utilisateur dans la BDD
     # Les stocker dans une variable à passer au template
-    return render_template("dashboard.html", user=session["username"])
+    user_data = retrieve_data(session['username'])
+    return render_template("dashboard.html", user=session["username"], user_data=user_data)
 
 @app.route("/recommended_workout")
 def recommended_workout():
@@ -110,4 +112,18 @@ def recommended_workout():
     """
     if "username" not in session:
         return redirect("/sign_in")
+    
+    # dummy workout, must be replaced with a call to the API that exposes the AI
+    dummy_training = """
+    Entraînement en fractionné\n
+    Durée : 55 minutes\n
+    Étapes :\n
+    <ul>
+    <li>15 min à 145 BPM - échauffement\n</li>
+    <li>alterner 10 min à 170 BPM et 3 min à 145 BPM (répéter 3X)\n</li>
+    <li>10 min à 145 BPM - récupération\n</li>
+    </ul>
+    Cet entraînement vous permettra de soutenir un effort intense sur de plus longues distances.
+    """
     return render_template("recommended_workout.html", user=session["username"])
+

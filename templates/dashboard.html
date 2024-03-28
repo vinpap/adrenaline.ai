@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
-{% block header %}
-  
-{% endblock %}
 
 {% block content %}
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='dashboard.js') }}"></script>
 <div class="user-metrics">
   <h1 class="page-title">Votre tableau de bord</h1>
-  <h3>Distance parcourue en km</h3>
-  <span>INSÉRER GRAPHIQUE ICI</span>
-  <h3>Calories brûlées</h3>
-  <span>INSÉRER GRAPHIQUE ICI</span>
+  <div id="distance-graph"></div>
+  <div id="calories-graph"></div>
 </div>
+<script type="text/javascript">
+  plot_graphs({{user_data|tojson}})
+</script>
 
 {% endblock %}

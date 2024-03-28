@@ -26,7 +26,20 @@ footer {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    min-height: 90%;
 }
 .page-title {
     font-size: 55px;
+}
+
+.recommended-workout {
+    display: flex;
+    flex-direction: column;
+    border: medium solid #CFD3CF;
+    font-weight: bold;
+    text-align: left;
+    align-items: top;
+    flex-grow: 1;
+    padding: 10px;
+    background-color: rgba(221, 226, 233, 0.788);
 }
