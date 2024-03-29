@@ -37,19 +37,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install pipenv
           pipenv install
-        # Setup environment values
-      - name: Set up environment values
-        run: |
-          export "MYSQL_HOST"=${{ secrets.MYSQL_HOST }}
-          export "MYSQL_USER"=${{ secrets.MYSQL_USER }}
-          export "MYSQL_PWD"=${{ secrets.MYSQL_PWD }}
-          export "MYSQL_DB_NAME"=${{ secrets.MYSQL_DB_NAME }}
-          export "FLASK_SESSION_KEY"=${{ secrets.FLASK_SESSION_KEY }}
-          printenv
+
         # Run the tests
       - name: Run tests
         run: |
+          printenv
           pipenv run pytest
+        env: 
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
+          MYSQL_DB_NAME: =${{ secrets.MYSQL_DB_NAME }}
+          FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
 
 
   build:
@@ -106,7 +105,7 @@ jobs:
           export "MYSQL_USER"=${{ secrets.MYSQL_USER }}
           export "MYSQL_PWD"=${{ secrets.MYSQL_PWD }}
           export "MYSQL_DB_NAME"=${{ secrets.MYSQL_DB_NAME }}
-          export "FLASK_SESSION_KEY"="${{ secrets.FLASK_SESSION_KEY }}"
+          export "FLASK_SESSION_KEY"=${{ secrets.FLASK_SESSION_KEY }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
