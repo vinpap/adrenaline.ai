@@ -47,7 +47,7 @@ jobs:
           MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
           MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
-          MYSQL_DB_NAME: =${{ secrets.MYSQL_DB_NAME }}
+          MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
           FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
 
 
