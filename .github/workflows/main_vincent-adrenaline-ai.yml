@@ -48,8 +48,7 @@ jobs:
         # Run the tests
       - name: Run tests
         run: |
-          pipenv run mlflow server --host 127.0.0.1 --port 8080 & pipenv run python setup_tests.py
-          pipenv run python -m pytest
+          pipenv run pytest
 
 
   build:
@@ -98,7 +97,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-        
+
       - name: Set up environment values
         run: |
           export "MYSQL_HOST"=${{ secrets.MYSQL_HOST }}
