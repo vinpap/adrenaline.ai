@@ -99,6 +99,7 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
+      # Set up environment variables
       - name: Set up environment values
         run: |
           export "MYSQL_HOST"=${{ secrets.MYSQL_HOST }}
