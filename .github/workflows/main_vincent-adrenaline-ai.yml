@@ -13,12 +13,6 @@ on:
       - main
   workflow_dispatch:  
 
-env: 
-  MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-  MYSQL_USER: ${{ secrets.MYSQL_USER }}
-  MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
-  MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
-  FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
 
 jobs:
   test:
@@ -78,14 +72,7 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
-        env: 
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
-          MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
-          FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
 
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
@@ -105,8 +92,6 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Set Commit SHA environment variable
-        run:   echo "COMMIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
@@ -122,9 +107,4 @@ jobs:
           app-name: 'vincent-adrenaline-ai'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F1F8143E966E46E4993B13396DD04A10 }}
-        env: 
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
-          MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
-          FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
+
