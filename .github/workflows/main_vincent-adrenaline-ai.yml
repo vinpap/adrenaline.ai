@@ -114,9 +114,9 @@ jobs:
           app-name: 'vincent-adrenaline-ai'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F1F8143E966E46E4993B13396DD04A10 }}
-          env: 
-            MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-            MYSQL_USER: ${{ secrets.MYSQL_USER }}
-            MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
-            MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
-            FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
+        env: 
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
+          MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
+          FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
