@@ -396,7 +396,7 @@
                 - main
     \end{verbatim}
 
-    On remarquera que le fichier liste trois "jobs" : "test", "build" et "deploy". Ceux-ci correspondent à une liste de tâches que GitHub Action exécute successivement. 
+    On remarquera que le fichier liste trois "jobs" : "test", "build" et "deploy". Ceux-ci correspondent à une liste de tâches que GitHub Action exécute lorsque du code est poussé sur la branche main ou que du code est fusionné sur cette branche. 
 
     Le job "test" indique quelles instructions doivent être réalisées pour mettre en place l'environnement des tests et exécuter ces derniers :
 
@@ -422,9 +422,22 @@
 
     Ces lignes incluent l'installation des dépendances nécessaires pour que les tests s'exécutent ainsi que la définition des variables d'environnement nécessaires, notamment pour que l'application sache où se trouve la base de données et comment s'y connecter. On notera l'utilisation de secrets GitHub afin de ne pas exposer des informations sensibles telles que le mot de passe de notre base de données.
 
-    Exactement de la même manière, GitHub Action nous permet d'automatiser le déploiement de notre application en s'interfaçant directement avec Azure. Ceci est réalisé dans les jobs "build" et "deploy". Tout comme pour l'exécution des tests. 
+    Exactement de la même manière, GitHub Action nous permet d'automatiser le déploiement de notre application en s'interfaçant directement avec Azure. Ceci est réalisé dans les jobs "build" et "deploy".
+    \begin{figure}[h!]
+        \includegraphics[width=12cm]{gh_action_1}
+        \centering
+        \caption{GitHub Action nous permet de visualiser l'exécution des tâches que nous avons paramétrées.}
+        \centering
+    \end{figure}
+    
+    Une version de l'application déployée sur Azure est disponible via \href{https://vincent-adrenaline-ai.azurewebsites.net/}{ce lien}. 
 
-    [PENSER À METTRE L'URL DE L'APPLICATION DÉPLOYÉE]
+    \begin{figure}[h!]
+        \includegraphics[width=12cm]{azure}
+        \centering
+        \caption{Une capture d'écran de notre application déployée sur Azure. On notera qu'il a été nécessaire de définir les variables d'environnement nécessaires à l'exécution via le tableau de bord d'Azure}
+        \centering
+    \end{figure}
     
     \section{Documentation}
     \subsection{Déploiement}
