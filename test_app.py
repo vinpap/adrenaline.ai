@@ -42,7 +42,7 @@ def test_sign_in(client):
 
     # Wrong username and password
     form_data = {
-        "username": "qwertyuiopasdfghjklzxcvbnm",
+        "username": "user or 1=1",
         "password": "qwertyuiopasdfghjklzxcvbnm"
     }
     response = client.post("/sign_in", follow_redirects=True, data=form_data)

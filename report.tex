@@ -180,11 +180,6 @@
         \item \textbf{MySQL} pour implémenter la base de données.
     \end{itemize}
     \subsection{Gestion de projet}
-
-    La réalisation de ce projet a été planifiée sur une période de quatre semaines à raison de deux jours complets de travail par semaine. Cela équivaut à environ 56 heures de travail au total.
-
-    Le travail nécessaire à ce projet a été organisé en utilisant la méthode \textbf{kanban}. Cette technique de gestion de projet repose sur l'utilisation d'un tableau qui recense les différentes tâches avec leur statut (terminées, à revoir, en cours, etc...). Un aspect important de ce tableau est qu'il limite le nombre de tâches présentes dans chaque colonne. L'objectif est de limiter la charge de travail sur les personnes qui travaillent sur le projet et de les encourager à terminer leurs tâches (plutôt que de disperser leurs efforts sur un grand nombre de tâches). Dans le cadre de ce projet, le tableau Kanban proposé par GitHub a été utilisé.
-
     \begin{figure}[h!]
         \includegraphics[width=12cm]{kanban}
         \centering
@@ -192,11 +187,40 @@
         \centering
     \end{figure}
 
+    La réalisation de ce projet a été planifiée sur une période de quatre semaines à raison de deux jours complets de travail par semaine. Cela équivaut à environ 56 heures de travail au total.
+
+    Le travail nécessaire à ce projet a été organisé en utilisant la méthode \textbf{kanban}. Cette technique de gestion de projet repose sur l'utilisation d'un tableau qui recense les différentes tâches avec leur statut (terminées, à revoir, en cours, etc...). Un aspect important de ce tableau est qu'il limite le nombre de tâches présentes dans chaque colonne. L'objectif est de limiter la charge de travail sur les personnes qui travaillent sur le projet et de les encourager à terminer leurs tâches (plutôt que de disperser leurs efforts sur un grand nombre de tâches). Dans le cadre de ce projet, le tableau Kanban proposé par GitHub a été utilisé.
+
     Pour compléter l'utilisation de ce tableau, un \textbf{bilan des tâches en cours} a été réalisé tous les jours passés sur ce projet, en début de journée. Ce bilan d'une dizaine de minutes environ vise à faire le point sur les tâches en cours et à venir pour s'assurer que celles-ci sont toujours pertinentes. Il arrive en effet que des tâches initialement planifiées se révèlent finalement non nécessaires ou superflues. Faire un point en début de journée permet donc de commencer à travailler avec une vision claire des tâches de la journée tout en s'assurant de leur pertinence.
 
-    \section{Maquette de l'application}
+    \section{Conception de l'application}
 
-    La prochaine étape de ce projet est la conception d'une maquette pour représenter l'interface de notre future application web. Cette maquette est réalisée à l'aide de \href{https://www.figma.com/}{Figma}, un outil de conception graphique en ligne.
+    Cette section détaille l'étape de conception qui a été réalisée dans le cadre du développement d'Adrenaline.ai. La conception de ce projet consiste en l'élaboration de deux éléments :
+    \begin{itemize}
+        \item un \textbf{diagramme de flux de données} qui explicite les différents processus et entités nécessaires au fonctionnement du projet et détaille la circulation des informations entre eux
+        \item une \textbf{maquette} qui présente les différentes pages web de notre application ainsi que les interactions qui les lient.
+    \end{itemize}
+    \subsection{Diagramme de flux de données}
+    Le diagramme de flux de données présenté sur la page suivante expose les différents processus nécessaires au fonctionnement de l'application. Il comporte quatre types d'éléments :
+    \begin{itemize}
+        \item les \textbf{entités} : il s'agit des personnes et composants externes à l'application qui communiquent avec celle-ci. Dans notre cas, il existe deux entités : l'utilisateur qui interagit avec l'application, et le modèle d'intelligence artificielle qui est sollicité par l'application pour générer un entraînement recommandé en fonction des données d'un utilisateur
+        \item les \textbf{processus} : on peut les assimiler à des fonctions qui travaillent avec les données qu'elles reçoivent et communiquent avec des entités, ou d'autres processus
+        \item les \textbf{sources de données} : ce sont les fichiers, bases de données ou autres supports d'information qui stockent les données utilisées par les différents processus
+        \item les \textbf{flux de données}, représentés par des flèches : ils modélisent les transferts de données entre les différents processus, entités et sources de données.
+    \end{itemize}
+    Ce diagramme expose principalement trois grands processus : l'inscription d'un nouvel utilisateur, la connexion d'un utilisateur existant et la génération d'un entraînement personnalisé pour un utilisateur. On notera que le modèle d'intelligence artificielle est ici présenté comme une entité externe à l'application. En effet, on part ici du principe que ce modèle sera disponible via un composant externe tel qu'une API et ne fait donc pas partie de l'application à proprement parler.
+
+    \newpage
+    \begin{figure}[h!]
+        \includegraphics[width=15cm]{dataflow_e4}
+        \centering
+        \caption{Diagramme de flux de données qui représente le fonctionnement de l'application. Il modèlise trois grands processus de l'application : l'inscription d'un nouvel utilisateur, la connexion d'un utilisateur existant et la génération d'un entraînement personnalisé pour un utilisateur}
+        \centering
+    \end{figure}
+    \subsection{Maquette}
+    Le diagramme de flux de données nous a donné un aperçu du fonctionnement général de l'application. La prochaine étape de ce projet est la conception d'une maquette pour représenter l'interface de notre future application web. Ceci nous permettra d'avoir un support visuel qui nous permet d'identifier les pages web à coder et nous serivra de modèle général lors de l'implémentation du front-end. 
+    
+    Cette maquette est réalisée à l'aide de \href{https://www.figma.com/}{Figma}, un outil de conception graphique en ligne. La maquette est disponible sur la plateforme via \href{https://www.figma.com/design/bnhI3kF6nxTpzE3eWSHdCg/Adrenaline.AI?m=dev&node-id=3-15&t=JgaLgxLw4a6ylK5V-1}{ce lien}.
     \begin{figure}[h!]
         \includegraphics[width=12cm]{figma}
         \centering
@@ -312,15 +336,32 @@
     \end{figure}
     Pour renforcer la sécurité de l'authentification, une autre donnée a été ajoutée à la table 'users' : le \textbf{salt} ('sel' en français). Un salt est une séquence de bits aléatoire concaténée au mot de passe de l'utilisateur avant d'en calculer le hash. Cette technique sert à protéger notre système d'un type d'attaque qui utilise ce qu'on appelle des 'rainbow tables'. Les rainbow tables sont des tables qui stockent des paires prédéfinies de mots de passe et leur hash correspondant. Ajouter un salt aléatoire à nos mots de passe augmente considérablement la taille que devrait avoir cette table pour couvrir tous les mots de passe.
     
-    En plus du hashing, d'autres mécanismes de sécurité ont été mis en place pour protéger les données des utilisateurs ou garantir le bon fonctionnement de l'application :
+    En plus du hashing, d'autres mécanismes de sécurité ont été mis en place pour protéger les données des utilisateurs ou garantir le bon fonctionnement de l'application. Tout d'abord, les variables de configuration sensibles comme les identifiants de la base de données sont stockées dans des variables d'environnement, et pas dans le code. Par ailleurs, des mesures ont été prises pour empêcher les \textbf{injections SQL}. Une injection SQL est un type de cyberattaque qui consiste à exécuter du code SQL à l'insu des développeurs, par exemple en entrant du code dans un champ de formulaire. Voici un exemple de modification réalisée pour se protéger des injections  SQL dans le fichier utils.py :
+    \begin{verbatim}
+        # DANGEREUX
+        query = f"""SELECT * FROM users WHERE email = {email}""" 
+        c.execute(query)
+        # PROTÉGÉ
+        query = """SELECT * FROM users WHERE email = %s""" 
+        query_vars = (email, )
+        c.execute(query, query_vars)
+    \end{verbatim}
+    Dans l'exemple ci-dessus, l'utilisateur pourrait exploiter la première requête en entrant "email OR 1=1", par exemple. Comme la deuxième condition (1=1) est toujours vraie, cette requête renverrait la totalité de la table 'users', et pourrait donc potentiellement donner accès à des informations sensibles. Utiliser la deuxième méthode permet d'éviter ça.
+
+
+    \section{Tests}
+
+    La qualité du projet est assurée par des tests qui vérifient le bon fonctionnement du code. Ces tests visent principalement à garantir que l'application ne comporte pas de failles de sécurité et que les requêtes envoyées au serveur redirigent bien l'utilisateur vers les bonnes pages. Ces tests sont codés avec le framework de test \textbf{pytest}. Les tests sont implémentés dans le fichier \href{https://github.com/vinpap/adrenaline.ai/blob/main/test_app.py}{test\_app.py} et servent à vérifier le bon fonctionnement des différentes pages du site web. Voici une liste des tests réalisés :
     \begin{itemize}
-        \item stockage des variables de configuration sensibles comme les identifiants de la base de données dans des variables d'environnement, et pas dans le code
-        \item écriture des requêtes SQL de sorte à empêcher les injections SQL.
+        \item test\_index : vérifie que l'utilisateur est redirigé vers la bonne page selon qu'il est connecté ou non (/dashboard s'il est connecté, /sign\_in sinon)
+        \item test\_sign\_in : vérifie que la page de connexion gère bien les différents scénarios (nom d'utilisateur et mot de passe valides, identifiants invalides, utilisateur qui entre du code SQL dans le champ du nom d'utilisateur...)
+        \item test\_sign\_up : vérifie qu'il est bien impossible de recréer un compte déjà existant via le formulaire à l'adresse /sign\_up
+        \item test\_logout : ce test s'assure qu'un utilisateur est bien déconnecté lorsqu'il envoit une requête à /logout
+        \item test\_dasboard : vérifie qu'il est impossible de se connecter au tableau de bord sans être préalablement connecté
+        \item test\_recommended\_workout : effectue la même vérification à l'adresse /recommended\_workout.
     \end{itemize}
-    \section{Contrôle de la qualité du code}
     
-    \subsection{Tests}
-    La qualité du projet est assurée par des tests qui vérifient le bon fonctionnement du code. Ces tests visent principalement à garantir que l'application ne comporte pas de failles de sécurité et que les requêtes envoyées au serveur redirigent bien l'utilisateur vers les bonnes pages. Ces tests sont codés avec le framework de test \textbf{pytest}. Voici un exemple de test unitaire, ici pour vérifier que l'utilisateur est bien redirigé vers la bonne URL en fonction de s'il est authentifié ou non :
+    Voici un exemple de test unitaire avec test\_index :
     \begin{verbatim}
         def test_index(client):
             """
@@ -339,8 +380,51 @@
             assert signed_in_response.request.path == "/dashboard"
     \end{verbatim}
 
-    \subsection{Intégration et déploiement continus}
-    Parler du fonctionnement de GitHub Action, des secrets, etc...
+    \section{Intégration et déploiement continus}
+
+    Bien qu'il soit possible d'exécuter manuellement les tests ci-dessus, dans la pratique il est plus fiable d'automatiser leur exécution. Pour cela, nous utilisons \textbf{GitHub Action}, une fonctionnalité qui nous permet de réaliser des actions automatiquement lorsque des \textbf{déclencheurs} sont activés, autrement dit lorsque certains événements spécifiques surviennent.
+
+    La configuration de GitHub Action est réalisée dans le fichier \href{https://github.com/vinpap/adrenaline.ai/blob/main/.github/workflows/main_vincent-adrenaline-ai.yml}{main\_vincent-adrenaline-ai.yaml}. Les déclencheurs sont spécifiés au début du fichier :
+
+    \begin{verbatim}
+    on:
+        push:
+            branches:
+                - main
+        pull_request:
+            branches:
+                - main
+    \end{verbatim}
+
+    On remarquera que le fichier liste trois "jobs" : "test", "build" et "deploy". Ceux-ci correspondent à une liste de tâches que GitHub Action exécute successivement. 
+
+    Le job "test" indique quelles instructions doivent être réalisées pour mettre en place l'environnement des tests et exécuter ces derniers :
+
+    \begin{verbatim}
+        # Install pytest
+        - name: Install pytest and dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install pipenv
+            pipenv install
+  
+          # Run the tests
+        - name: Run tests
+          run: |
+            pipenv run pytest
+          env: 
+            MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+            MYSQL_USER: ${{ secrets.MYSQL_USER }}
+            MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
+            MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
+            FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
+    \end{verbatim}
+
+    Ces lignes incluent l'installation des dépendances nécessaires pour que les tests s'exécutent ainsi que la définition des variables d'environnement nécessaires, notamment pour que l'application sache où se trouve la base de données et comment s'y connecter. On notera l'utilisation de secrets GitHub afin de ne pas exposer des informations sensibles telles que le mot de passe de notre base de données.
+
+    Exactement de la même manière, GitHub Action nous permet d'automatiser le déploiement de notre application en s'interfaçant directement avec Azure. Ceci est réalisé dans les jobs "build" et "deploy". Tout comme pour l'exécution des tests. 
+
+    [PENSER À METTRE L'URL DE L'APPLICATION DÉPLOYÉE]
     
     \section{Documentation}
     \subsection{Déploiement}

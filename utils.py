@@ -25,8 +25,9 @@ def check_password(email: str, pwd: str):
         database=os.environ["MYSQL_DB_NAME"],
     ) as db:
         with db.cursor() as c:
-            query = f"""SELECT * FROM users WHERE email = '{email}'""" # Attention aux possibles injectinos SQL (e.g. si l'e-mail entré contient des guillemets)
-            c.execute(query)
+            query = """SELECT * FROM users WHERE email = %s""" 
+            query_vars = (email, )
+            c.execute(query, query_vars)
             results = c.fetchall()
             if not results:
                  raise ValueError(f"Email {email} does not match any recorded user")
