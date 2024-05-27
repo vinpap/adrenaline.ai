@@ -8,7 +8,8 @@ from utils import hash_new_password, user_exists, save_user, check_password, ret
 
 
 app = Flask(__name__)
-print(os.environ)
+for v in os.environ:
+    print(v)
 app.secret_key = os.environ["FLASK_SESSION_KEY"]
 
 
