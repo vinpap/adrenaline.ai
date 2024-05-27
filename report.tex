@@ -111,6 +111,8 @@
     \section*{Introduction}
 
     Nous sommes contactés par un fabricant d'équipements de sport et de montres connectées. Cette entreprise propose, entre autres, un site internet où sont publiés des programmes de course à pied génériques que les sportifs peuvent suivre pour s'améliorer. Cependant, elle aimerait bien passer à la vitesse supérieure en proposant des entraînements personnalisés selon la forme physique et l'expérience sportive des coureurs. Toutes ces données sont déjà disponibles grâce au modèle de montre connectée qu'elle commercialise et qui remporte un franc succès. Les data scientists de notre client travaillent déjà sur ce projet qu'ils ont baptisé \textbf{Adrenaline.AI}, mais ils n'ont personne dans leur équipe pour créer l'interface qui donnera accès à cette fonctionnalité. Notre rôle est donc de concevoir, développer et déployer la preuve de concept d'une application qui permettra aux utilisateurs de voir les entraînements personnalisés qui leur sont proposés.
+    
+    Le code de ce projet est disponible sur GitHub (\href{https://github.com/vinpap/adrenaline.ai}{https://github.com/vinpap/adrenaline.ai}). L'application et la base de données sont déployées sur \textbf{Microsoft Azure} (l'application est disponible sur \href{https://vincent-adrenaline-ai.azurewebsites.net/}{https://vincent-adrenaline-ai.azurewebsites.net/}).
     \section{Cahier des charges}
 
     Afin de formaliser au mieux le processus de développement et de s'assurer que l'application créée répond bien aux attentes du client, un cahier des charges est établi en discutant avec lui.
@@ -435,13 +437,12 @@
     \begin{figure}[h!]
         \includegraphics[width=12cm]{azure}
         \centering
-        \caption{Une capture d'écran de notre application déployée sur Azure. On notera qu'il a été nécessaire de définir les variables d'environnement nécessaires à l'exécution via le tableau de bord d'Azure}
+        \caption{Une capture d'écran de notre application déployée sur Azure. Les variables d'environnement nécessaires à l'exécution ont été définies sur le portail de gestion d'Azure.}
         \centering
     \end{figure}
     
     \section{Documentation}
     \subsection{Déploiement}
-    \subsection{Utilisation de l'application}
     \subsection{Exécution des tests}
     \subsection{Développement et intégration continus}
     

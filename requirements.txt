@@ -1,4 +1,4 @@
-Flask==3.0.2
+Flask==3.0.3
 mysql-connector-python
-pytest==8.1.1
-Requests==2.31.0
+pytest==8.2.1
+Requests==2.32.2
