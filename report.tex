@@ -88,9 +88,9 @@
 \title{%
     \huge Adrenaline.AI  \\
     \bigskip
-    \large E4 - Mise en situation \\ 
+    \large E4 \item Mise en situation \\ 
     Développeur en Intelligence Artificielle,
-    titre professionnel enregistré au RNCP - École IA Microsoft by Simplon
+    titre professionnel enregistré au RNCP \item École IA Microsoft by Simplon
     \vfill
     \includegraphics[width=14cm]{running.jpeg}
     \vfill}
@@ -392,10 +392,10 @@
     on:
         push:
             branches:
-                - main
+                \item main
         pull_request:
             branches:
-                - main
+                \item main
     \end{verbatim}
 
     On remarquera que le fichier liste trois "jobs" : "test", "build" et "deploy". Ceux-ci correspondent à une liste de tâches que GitHub Action exécute lorsque du code est poussé sur la branche main ou que du code est fusionné sur cette branche. 
@@ -404,14 +404,14 @@
 
     \begin{verbatim}
         # Install pytest
-        - name: Install pytest and dependencies
+        \item name: Install pytest and dependencies
           run: |
             python -m pip install --upgrade pip
             pip install pipenv
             pipenv install
   
           # Run the tests
-        - name: Run tests
+        \item name: Run tests
           run: |
             pipenv run pytest
           env: 
@@ -443,14 +443,149 @@
     
     \section{Documentation}
 
-    Une documentation est disponible sur le \href{https://github.com/vinpap/adrenaline.ai/blob/main/README.md}{fichier README du dépôt sur GitHub}. Elle explique 
+    Une documentation est disponible sur le \href{https://github.com/vinpap/adrenaline.ai/blob/main/README.md}{fichier README du dépôt sur GitHub}. Elle détaille la marche à suivre pour déployer l'application sur Azure et exécuter et automatiser les tests. Cette section résume cette documentation. 
+
     \subsection{Déploiement}
+
+    Cette section explique comment déployer l'application sur une ressource Azure Web App. L'utilisateur doit au préalable disposer d'un abonnement Microsoft Azure et d'un serveur MySQL (il peut s'il le souhaite utiliser le service "Azure Database for MySQL flexible server" d'Azure).
+
+    Pour commencer, l'utilisateur doit suivre cette procédure pour mettre en place un dépôt GitHub sur son poste de travail :
+    \begin{itemize}
+    \item Pour commencer, exporter un nouveau fork du dépôt GitHub en cliquant sur "Fork" en haut à droite de cette page.
+    \item Installer les dépendances du projet en exécutant ces commandes :
+    \begin{verbatim}
+    pip install pipenv
+    pipenv install .
+    \end{verbatim}
+    \item Supprimer le dossier .github.
+    \item Sur le serveur MySQL, créer une base de données et lui donner un nom arbitraire.
+    \item Exécuter la commande suivante dans le dossier où a été forké le dépôt GitHub :
+    \begin{verbatim}
+    mysql -h <adresse de votre serveur MySQL> -u <votre nom d'utilisateur> -p <nom de votre base de données> < create_db.sql
+    \end{verbatim}
+    Ceci remplira la base de données avec toutes les tables nécessaires à l'exécution de l'application.
+    \item Exporter le dépôt sur GitHub. 
+    \item Sur l'interface du dépôt dans votre navigateur, aller dans les paramètres et créer les secrets suivants qui seront utilisés pour tester et déployer l'application:
+    \begin{itemize}
+        \item FLASK\_SESSION\_KEY : lui donner une valeur quelconque. Cette variable est utilisée par l'application pour gérer les sessions des utilisateurs connectés
+        \item MYSQL\_DB\_NAME : le nom de la base de données
+        \item MYSQL\_HOST : l'adresse de la base de données
+        \item MYSQL\_PWD : le mot de passe de la base de données
+        \item MYSQL\_USER : le nom d'utilisateur à utiliser sur le serveur MySQL.
+    \end{itemize}
+    \end{itemize}
+
+    Il faut ensuite créer et configurer la ressource \textbf{Azure Web App} à utiliser pour déployer l'application :
+    \begin{itemize}
+        \item Aller sur le portail de Microsoft Azure et créer une ressource Azure Web App. Pendant la procédure de création, sélectionner Linux comme système d'exploitation et Python comme environnement d'exécution. Par ailleurs, sélectionner "Code" comme méthode de publication. Sélectionner un abonnement, une tarification et une région selon ses préférences.
+        \begin{figure}[h!]
+            \includegraphics[width=12cm]{azure_2}
+            \centering
+            \caption{Création d'une ressource Azure Web App}
+            \centering
+        \end{figure}
+        \item Dans l'onglet "Déploiement", activer le déploiement continu et connecter son compte GitHub à Azure. Puis sélectionner le dépôt où a été placé le code de l'application sur GitHub et la branche depuis laquelle le déploiement doit être réalisé. Cette étape créera automatiquement un fichier de configuration pour GitHub Action dans le dépôt. Il faut ensuite valider la création de votre ressource Azure en cliquant sur le bouton en surbrillance en bas de l'écran.
+        \begin{figure}[h!]
+            \includegraphics[width=12cm]{azure_3}
+            \centering
+            \caption{Définition des paramètres de déploiement intégré sur Azure}
+            \centering
+        \end{figure}
+        \item la création de la ressource prendra quelques minutes. Lorsqu'elle est terminée, se rendre sur la page de la ressource Azure. Cliquer sur "Paramètres" à gauche puis se rendre dans la section "Variables d'environnement".
+        \item Sur l'écran qui apparaît, créer cinq variables d'environnement \textbf{qui portent le même nom et ont les mêmes valeurs que les cinq variables définies plus haut}. La liste des valeurs devrait ressembler à ceci :
+        \begin{figure}[h!]
+            \includegraphics[width=12cm]{azure_4}
+            \centering
+            \caption{Liste des variables d'environnement à définir sur la ressource Azure}
+            \centering
+        \end{figure}
+        \item La ressource sera automatiquement relancée. L'application est maintenant disponible via le lien présenté sur la page d'accueil de la ressource.
+    \end{itemize}
     \subsection{Automatisation des tests}
+    Adrenaline.ai est fourni avec des tests qui visent à vérifier le bon fonctionnement de l'application. Ces tests peuvent être lancés localement en utilisant les commandes suivantes :
+    \begin{verbatim}
+        export FLASK_SESSION_KEY="<n'importe quelle valeur>"
+        export MYSQL_DB_NAME="<le nom de votre base de données>"
+        export MYSQL_HOST="<l'adresse de la base de données>"
+        export MYSQL_PWD="<le mot de passe de votre base de données>"
+        export MYSQL_USER="<votre nom d'utilisateur sur votre serveur MySQL>"
+        pipenv run pytest
+    \end{verbatim}
+
+    Ces commandes devraient afficher ceci dans le terminal :
+    \begin{figure}[h!]
+        \includegraphics[width=12cm]{tests}
+        \centering
+        \caption{Exemple de bonne exécution des tests fournis avec Adrenaline.ai}
+        \centering
+    \end{figure}
+
+    Ces tests sont utiles si l'utilisateur souhaite modifier le code. Ils permettent de sassurer que les modifications apportées n'ont pas introduit de bug dans l'application. Il est fortement recommandé de les automatiser à l'aide de GitHub Action afin qu'ils soient exécutés à chaque fois qu du code est poussé sur le dépôt GitHub de l'utilisateur. Pour cela, ouvrir le fichier YAML qui a automatiquement été généré par Azure (il se trouve dans le dossier du dépôt de l'utilisateur, dans .github/workflows). Modifier la section "on" au début du fichier pour qu'elle ressemble à ceci :
+    \begin{verbatim}
+        on:
+            push:
+                branches:
+                    - main
+            pull_request:
+                branches:
+                    - main
+            workflow_dispatch:  
+    \end{verbatim}
+    Ensuite, dans la section "jobs", rajouter ce bloc de code avant "build" :
+    \begin{verbatim}
+        test:
+            runs-on: ubuntu-latest
+
+            strategy:
+            matrix:
+                # Run in all these versions of Python
+                python-version: [3.8, 3.9]
+            steps:
+                # Setup which version of Python to use
+            - name: Checkout repository files
+                uses: actions/checkout@v2
+            - name: Set Up Python ${{ matrix.python-version }}
+                uses: actions/setup-python@v2
+                with:
+                python-version: ${{ matrix.python-version }}
+
+                # Display the Python version being used
+            - name: Display Python version
+                run: python -c "import sys; print(sys.version)"
+
+                # Install pytest
+            - name: Install pytest and dependencies
+                run: |
+                python -m pip install --upgrade pip
+                pip install pipenv
+                pipenv install
+
+                # Run the tests
+            - name: Run tests
+                run: |
+                pipenv run pytest
+                env: 
+                MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+                MYSQL_USER: ${{ secrets.MYSQL_USER }}
+                MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
+                MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
+                FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
+    \end{verbatim}
+
+    Ces modifications indiquent à GitHub Action que les tests doivent être exécutés à chaque fois que du code est est intégré à la branche "main" (penser à modifier ces lignes en conséquence si l'on utilise une branche portant un autre nom), avec Python 3.8 et 3.9.
+
+
+
+
   
-    
-    \newpage
+
     \section*{Conclusion}
-    Résumer le travail accompli puis parler des difficultés potentielles et des axes d'amélioration
+    Ce projet a couvert les étapes de conception, développement et déploiement de la preuve de concept d'une application. Nous avons ainsi pu mettre en place une application web sur le cloud tout en automatisant les étapes de test et de déploiement du code. Le résultat nous indique qu'avec cette base, il est possible de poursuivre le développement d'Adrenaline.ai dans le but de la rendre disponible à tous ceux qui utilisent les montres connectées de notre client. On notera cependant plusieurs points sur lesquels il paraît important de porter notre attention dans la suite du processus de développement :
+    \begin{itemize}
+        \item L'interface de l'application développée pour cette preuve de concept reste très basique. Il pourrait être intéressant de faire appel à des web designers pour améliorer l'esthétique et l'ergonomie des différentes pages web et ainsi améliorer l'expérience des utilisateurs.
+        \item L'intégration du modèle d'intelligence artificielle à l'application devra elle aussi être pensée pour améliorer l'expérience utilisateur. Le temps nécessaire pour générer un entraînement personnalisé pour un utilisateur est notamment un facteur important : l'interface devra peut-être renseigner l'utilisateur sur ce temps d'attente
+        \item En fonction de l'évolution des besoins de notre client, il pourrait être pertinent pour celui-ci de modifier son abonnement Microsoft Azure pour bénéficier de support ou de fonctionnalités supplémentaires.
+    \end{itemize}
     
     
 

@@ -4,7 +4,7 @@ La documentation ci-dessous détaille les différentes étapes qui permettent de
 
 ## Déploiement
 
-Cette section explique comment déployer l'application sur une ressource Azure Web App. Vous devrez au préalable disposer des éléments suivants d'un abonnement Microsoft Azure et d'un serveur MySQL (vous pouvez si vous le souhaitez utiliser le service "Azure Database for MySQL flexible server" d'Azure).
+Cette section explique comment déployer l'application sur une ressource Azure Web App. Vous devrez au préalable disposer d'un abonnement Microsoft Azure et d'un serveur MySQL (vous pouvez si vous le souhaitez utiliser le service "Azure Database for MySQL flexible server" d'Azure).
 
 ### Mise en place du dépôt GitHub
 - Pour commencer, créez un nouveau fork de ce dépôt GitHub en cliquant sur "Fork" en haut à droite de cette page.
