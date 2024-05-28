@@ -8,6 +8,11 @@ Cette section explique comment déployer l'application sur une ressource Azure W
 
 ### Mise en place du dépôt GitHub
 - Pour commencer, créez un nouveau fork de ce dépôt GitHub en cliquant sur "Fork" en haut à droite de cette page.
+- Installez les dépendances du projet en exécutant ces commandes :
+```
+pip install pipenv
+pipenv install .
+```
 - Supprimez le dossier .github.
 - Sur votre serveur MySQL, créez une base de données et donnez-lui le nom de votre choix.
 - Exécutez la commande suivante dans le dossier où vous avez forké le dépôt GitHub :
@@ -23,8 +28,14 @@ Ceci remplira la base de données que vous avez créée avec toutes les tables n
 
 ### Création et configuration de la ressource Microsoft Azure
 - Rendez-vous ensuite sur le portail de Microsoft Azure et créez une ressource Azure Web App. Pendant la procédure de création, sélectionnez Linux comme système d'exploitation et Python comme environnement d'exécution. Par ailleurs, sélectionnez "Code" comme méthode de publication. Sélectionnez un abonnement, une tarification et une région de votre choix. 
+
+
 ![Capture d'écran de la création d'une application web sur Azure.](img/azure_2.png)
+
+
 - Dans l'onglet "Déploiement", activez le déploiement continu et connectez votre compte GitHub à Azure. Sélectionnez ensuite le dépôt où vous avez placé le code de l'application sur GitHub et une branche de votre choix.
+
+
 ![Capture d'écran de la création d'une application web sur Azure.](img/azure_3.png)
 
 Cette étape créera automatiquement un fichier de configuration pour GitHub Action dans votre dépôt. Vous pouvez ensuite valider la création de votre ressource Azure en cliquant sur le bouton en surbrillance en bas de l'écran.
@@ -37,12 +48,75 @@ La ressource sera automatiquement relancée. Votre application est maintenant di
 
 ## Automatiser les tests
 
-DIRE COMMENT CHECKER LE RÉSULTAT DU PIPELINE GH ACTION ET COMMENT MODIFIER LES TRIGGERS
+Adrenaline.ai est fourni avec des tests qui visent à vérifier le bon fonctionnement de l'application. Vous pouvez exécuter ces tests localement en utilisant les commandes suivantes :
+```
+export FLASK_SESSION_KEY="<n'importe quelle valeur>"
+export MYSQL_DB_NAME="<le nom de votre base de données>"
+export MYSQL_HOST="<l'adresse de la base de données>"
+export MYSQL_PWD="<le mot de passe de votre base de données>"
+export MYSQL_USER="<votre nom d'utilisateur sur votre serveur MySQL>"
+pipenv run pytest
+```
+
+Vous devriez voir apparaître ceci dans votre terminal :
+
+![Capture d'écran des tests.](img/tests.png)
+
+Ces tests sont utiles si vous souhaitez modifier le code. Ils vous permettent de vous assurer que les modifications apportées n'ont pas introduit de bug dans l'application. Il est fortement recommandé de les automatiser à l'aide de GitHub Action afin qu'ils soient exécutés à chaque fois que vous poussez du code sur votre dépôt GitHub. Pour cela, ouvrez le fichier YAML qui a automatiquement été généré par Azure (il se trouve dans le dossier de votre dépôt, dans .github/workflows). Modifiez la section "on" au début du fichier pour qu'elle ressemble à ceci :
+
+```
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  
+```
+
+Ensuite, dans la section "jobs", rajoutez ce bloc de code avant "build" :
+
+```
+test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # Run in all these versions of Python
+        python-version: [3.8, 3.9]
+    steps:
+        # Setup which version of Python to use
+      - name: Checkout repository files
+        uses: actions/checkout@v2
+      - name: Set Up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+        # Display the Python version being used
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+
+        # Install pytest
+      - name: Install pytest and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install
+
+        # Run the tests
+      - name: Run tests
+        run: |
+          pipenv run pytest
+        env: 
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PWD: ${{ secrets.MYSQL_PWD }}
+          MYSQL_DB_NAME: ${{ secrets.MYSQL_DB_NAME }}
+          FLASK_SESSION_KEY: ${{ secrets.FLASK_SESSION_KEY }}
+```
+
+Ces modifications indiquent à GitHub Action que les tests doivent être exécutés à chaque fois que du code est est intégré à la branche "main" (pensez à modifier ces lignes en conséquence si vous utilisez une branche portant un autre nom), avec Python 3.8 et 3.9.
 
 
-
-L'application est actuellement déployée sur Microsoft Azure à [cette adresse](https://vincent-adrenaline-ai.azurewebsites.net/).
-
-Les instructions suivantes expliquent comment déployer l'application sur un serveur Linux sur lequel Python est déjà installé.
-- pour commencer, cloner ce dépôt GitHub grâce à la commande ```git clone https://github.com/vinpap/adrenaline.ai.git```
--

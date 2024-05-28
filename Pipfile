@@ -4,10 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
+flask = "==3.0.3"
 mysql-connector-python = "*"
-requests = "*"
-pytest = "*"
+requests = "==2.32.2"
+pytest = "==8.2.1"
 
 [dev-packages]
 
